@@ -37,6 +37,10 @@ class Unlock90Min:
         return driver
 
     def __init__(self, notebook_url: str, user_data_dir: str):
+        print('start install chromium')
+        Unlock90Min.install_chromium()
+        print('end install chromium')
+
         self.driver = Unlock90Min.create_notebook_page(notebook_url, user_data_dir)
         self.__duration_hour = 11
 
@@ -55,7 +59,7 @@ class Unlock90Min:
         self.driver.set_window_size(original_size['width'], original_size['height'])
 
     def periodic_process(self):
-        WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((By.ID,'connect'))).click()
+        WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((By.ID,'comments'))).click()
         path = '/content/drive/My Drive/ETTTS/screenshot.png'
         self.save_screenshot(path)
 
@@ -69,13 +73,9 @@ class Unlock90Min:
         self.end_process()
     
     def start(self):
-        print('start install chromium')
-        Unlock90Min.install_chromium()
-        print('end install chromium')
-
         time.sleep(10)
         self.save_screenshot()
 
-        print('start unlock 90 mina')
-        threading.Thread(target=persistence_notebook, args=(driver, )).start()
+        print('start unlock 90 min')
+        threading.Thread(target=self.persistence_notebook).start()
 
